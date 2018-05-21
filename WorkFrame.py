@@ -24,12 +24,15 @@ class Frame(wx.Frame):
         imageSmallCat = imageSmallCat.Scale(185, 210)
         temp = imageSmallCat.ConvertToBitmap()
         self.bmpSmallCat = wx.StaticBitmap(panel, bitmap=temp, pos=(597, -80), size=(185, 210))
-        self.textTitle = LoginFrame.TransparentText(panel, id=wx.ID_ANY, label=u"SWS Student Management System", pos=(100, 25),
-                                         size=(100, 50))
+        self.textTitle = LoginFrame.TransparentText(panel, id=wx.ID_ANY, label=u"SWS Student Management System",
+                                                    pos=(100, 25),
+                                                    size=(100, 50))
         font = wx.Font(23, wx.ROMAN, wx.ITALIC, wx.NORMAL)
         self.textTitle.SetFont(font)
 
         # self.textWelcome = wx.StaticText(panel, id=wx.ID_ANY, label=u"Welcome "+ userName + "!", pos=(300, 10), size=(470, 20), style=wx.ALIGN_RIGHT)
+
+
         self.buttonStudent = wx.Button(panel, id=wx.ID_ANY, label=u"Student", pos=(0, 80), size=wx.DefaultSize, style=0)
         self.buttonTeacher = wx.Button(panel, id=wx.ID_ANY, label=u"Teacher", pos=(112, 80), size=wx.DefaultSize, style=0)
         self.buttonCourse = wx.Button(panel, id=wx.ID_ANY, label=u"Course", pos=(224, 80), size=wx.DefaultSize, style=0)
@@ -268,6 +271,20 @@ class Frame(wx.Frame):
                                             pos=self.inputA22InputPosition, size=self.inputInputSize)
 
 
+        self.p5ButtonQuery = wx.Button(self.panelStatistics, id=wx.ID_ANY, label=u"Query", pos=(700, 3), size=(80, 28),
+                                        style=0)
+        # self.p5ButtonQuery = wx.Button(self.panelStatistics, id=wx.ID_ANY, label=u"Query", pos=(700, 3), size=(80, 28),
+        #                                style=0)
+        # self.p5ButtonQuery = wx.Button(self.panelStatistics, id=wx.ID_ANY, label=u"Query", pos=(700, 3), size=(80, 28),
+        #                                style=0)
+        # self.p5ButtonQuery = wx.Button(self.panelStatistics, id=wx.ID_ANY, label=u"Query", pos=(700, 3), size=(80, 28),
+        #                                style=0)
+        # self.p5StatisticsList = wx.ListCtrl( self.panelStatistics, id=wx.ID_ANY, pos=(0, 65), size=(785, 405), style=wx.LC_REPORT)
+        # self.p5StatisticsList.InsertColumn(0, "Student ID")
+        # self.p5StatisticsList.InsertColumn(1, "Average score")
+        # self.p5StatisticsList.SetColumnWidth(0, 160)
+        # self.p5StatisticsList.SetColumnWidth(1, 170)
+
 
         # self.Show()
 
@@ -330,6 +347,7 @@ class Frame(wx.Frame):
         self.p4SelectList.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.p4ListNoFocus)
 
 # p5 Bind
+        self.p5ButtonQuery.Bind(wx.EVT_BUTTON, self.p5PressQueryButton)
 
 #total def
 
@@ -541,8 +559,9 @@ class Frame(wx.Frame):
 
                 if( isOK == False ):
                   wx.MessageDialog(self, "Add failed!", "Message").ShowModal()
-
-                self.p1StudentList.DeleteAllItems()
+                else :
+                    self.disableAll()
+                    self.p1StudentList.DeleteAllItems()
 
 
         if self.isAddORModify == "Modify" :
@@ -553,8 +572,9 @@ class Frame(wx.Frame):
                              self.p1EntranceYearOutput.GetValue(),self.p1ClassOutput.GetValue())
                 if( isOK == False ):
                     wx.MessageDialog(self, "Modify failed!", "Message").ShowModal()
-
-                self.p1StudentList.DeleteAllItems()
+                else :
+                    self.disableAll()
+                    self.p1StudentList.DeleteAllItems()
 
     def p1ListFocus(self, event):
         self.p1ButtonDelete.Enable()
@@ -661,9 +681,9 @@ class Frame(wx.Frame):
                 isOK = Solve.AddTeacher(self.p2TeacherIDOutput.GetValue(),self.p2TeacherNameOutput.GetValue())
                 if( isOK == False ):
                   wx.MessageDialog(self, "Add failed!", "Message").ShowModal()
-
-                self.p2TeacherList.DeleteAllItems()
-
+                else:
+                    self.disableAll()
+                    self.p2TeacherList.DeleteAllItems()
 
         if self.isAddORModify == "Modify" :
             p2IsModify = wx.MessageDialog(self, "Are you sure to modify ?", "Modify", wx.YES_NO)
@@ -671,8 +691,9 @@ class Frame(wx.Frame):
                 isOK = Solve.UpdateTeacher(self.p2TeacherIDOutput.GetValue(),self.p2TeacherNameOutput.GetValue())
                 if( isOK == False ):
                     wx.MessageDialog(self, "Modify failed!", "Message").ShowModal()
-
-                self.p2TeacherList.DeleteAllItems()
+                else:
+                    self.disableAll()
+                    self.p2TeacherList.DeleteAllItems()
 
     def p2ListFocus(self, event):
         self.p2ButtonDelete.Enable()
@@ -787,8 +808,9 @@ class Frame(wx.Frame):
 
                 if( isOK == False ):
                   wx.MessageDialog(self, "Add failed!", "Message").ShowModal()
-
-                self.p3CourseList.DeleteAllItems()
+                else :
+                    self.disableAll()
+                    self.p3CourseList.DeleteAllItems()
 
 
         if self.isAddORModify == "Modify" :
@@ -805,8 +827,9 @@ class Frame(wx.Frame):
                                             tmp)
                 if( isOK == False ):
                     wx.MessageDialog(self, "Modify failed!", "Message").ShowModal()
-
-                self.p3CourseList.DeleteAllItems()
+                else :
+                    self.disableAll()
+                    self.p3CourseList.DeleteAllItems()
 
     def p3ListFocus(self, event):
         self.p3ButtonDelete.Enable()
@@ -827,6 +850,10 @@ class Frame(wx.Frame):
         self.isAddORModify = "Add"
         self.clearAllOutput()
 
+        if self.userType == 2 :
+            self.p4GradeOutput.Disable()
+            self.p4GradeOutput.SetValue("0")
+
     def p4PressModifyButton(self, event):
         self.p4ButtonConfirm.Enable()
         self.p4StudentIDOutput.Disable()
@@ -834,6 +861,9 @@ class Frame(wx.Frame):
         self.p4CourseIDOutput.Enable()
         self.p4SelectYearOutput.Enable()
         self.p4GradeOutput.Enable()
+
+        if self.userType == 2 :
+            self.p4GradeOutput.Disable()
 
         item = self.p4SelectList.GetFocusedItem()
         self.p4StudentIDOutput.SetValue(self.p4SelectList.GetItemText(item, 0))
@@ -922,6 +952,7 @@ class Frame(wx.Frame):
 
         if( self.isAddORModify == "Add"):
             p4IsAdd = wx.MessageDialog(self, "Are you sure to add?", "Message", wx.YES_NO)
+
             if p4IsAdd.ShowModal() == wx.ID_YES:
                 isOK = Solve.AddCourseChoose( self.p4StudentIDOutput.GetValue(),
                                         self.p4CourseIDOutput.GetValue(),
@@ -931,8 +962,9 @@ class Frame(wx.Frame):
 
                 if( isOK == False ):
                   wx.MessageDialog(self, "Add failed!", "Message").ShowModal()
-
-                self.p4SelectList.DeleteAllItems()
+                else :
+                    self.disableAll()
+                    self.p4SelectList.DeleteAllItems()
 
 
         if self.isAddORModify == "Modify" :
@@ -946,8 +978,9 @@ class Frame(wx.Frame):
                                             self.p4GradeOutput.GetValue())
                 if( isOK == False ):
                     wx.MessageDialog(self, "Modify failed!", "Message").ShowModal()
-
-                self.p4SelectList.DeleteAllItems()
+                else :
+                    self.disableAll()
+                    self.p4SelectList.DeleteAllItems()
 
     def p4ListFocus(self, event):
         self.p4ButtonDelete.Enable()
@@ -959,7 +992,41 @@ class Frame(wx.Frame):
 
 
 # p5 def
+    def p5PressQueryButton(self, event):
+        if self.p5StudentIDInput.GetValue() != "":
+            result = Solve.AnyStudentIDToScore(self.p5StudentIDInput.GetValue())
+            if result[0][0] != None:
+                self.studentScoreMessage = wx.MessageDialog(self, "The average score of student " + self.p5StudentIDInput.GetValue() + " is " + str(result[0][0]) + "!", "Message", wx.OK)
+                self.studentScoreMessage.ShowModal()
 
+        elif self.p5StudentNameInput.GetValue() != "":
+            result = Solve.AnyStudentNameToScore(self.p5StudentNameInput.GetValue())
+            if result[0][0] != None:
+                self.studentScoreMessage = wx.MessageDialog(self, "The average score of student " + self.p5StudentNameInput.GetValue() + " is " + str(result[0][1]) + "!", "Message", wx.OK)
+                self.studentScoreMessage.ShowModal()
+
+        elif self.p5ClassInput.GetValue() != "":
+            result = Solve.ClassToScore(self.p5ClassInput.GetValue())
+            if result[0][0] != None:
+                self.classScoreMessage = wx.MessageDialog(self, "The average score of class " + self.p5ClassInput.GetValue() + " is " + str(result[0][0]) + "!", "Message", wx.OK)
+                self.classScoreMessage.ShowModal()
+
+        elif self.p5CourseIDInput.GetValue() != "":
+            result = Solve.CourseToScore(self.p5CourseIDInput.GetValue())
+            if result[0][0] != None:
+                self.courseScoreMessage = wx.MessageDialog(self,
+                    "The average score of course " + self.p5CourseIDInput.GetValue() + " is " + str(
+                            result[0][0]) + "!", "Message", wx.OK)
+                self.courseScoreMessage.ShowModal()
+
+        else:
+            result = Solve.ShowAllStudentAvgScore()
+            print(result)
+            if result[0][0] != None:
+                self.allStudentScoreMessage = wx.MessageDialog(self,
+                    "The average score of all students is " + str(
+                            result[0][0]) + "!", "Message", wx.OK)
+                self.allStudentScoreMessage.ShowModal()
 
 
 
@@ -1005,8 +1072,14 @@ class Frame(wx.Frame):
             self.p4CourseIDOutput.Hide()
             self.p4SelectYearOutput.Hide()
             self.p4GradeOutput.Hide()
+
         if self.userType == 1:
-            self.p3ButtonModify.Show()
+            self.p4ButtonModify.Show()
+            self.p4GradeOutput.Show()
+            self.p4ButtonConfirm.Show()
+
+
+
 
     def clearAllInput(self):
         self.p1StudentIDInput.SetValue("")
@@ -1093,7 +1166,9 @@ class Frame(wx.Frame):
 
 if __name__ == '__main__':
     app = wx.App(False)
-    frame = Frame(None , "administrator" , 2)
+    frame = Frame(None, "student", 0)
+    # frame = Frame(None , "teacher" , 1)
+    # frame = Frame(None, "Administrator", 2)
     frame.Show(True)
     app.MainLoop()
 

@@ -3,9 +3,9 @@ import wx
 # import WorkFrame
 
 hoster = '127.0.0.1'
-porter = 3306
+porter = 330
 username = 'root'
-pwd = 'yangly2008'
+pwd = '353353353'
 database = 'test'
 
 def CreateStudentTable():
@@ -202,7 +202,7 @@ def AddCourseChoose(studentID, courseID, teacherID, chosenYear, score):
                                where courseID = %s
                                 """
             sql = """
-                    insert into courseChoose values(%s, %s, %s, %s, %s)
+                    insert into courseChoose values(%s, %s, %s, %s)
                      """
             sqlcheck = """
                         select *
@@ -215,16 +215,16 @@ def AddCourseChoose(studentID, courseID, teacherID, chosenYear, score):
 
                 cursor.execute(sqlCurrentYear)
                 currentYear = cursor.fetchall()[0][0]
-                # print(currentYear)
+                print(currentYear)
                 cursor.execute(sqlEntranceYear,(studentID))
                 entranceYear = cursor.fetchall()[0][0]
-                # print(entranceYear)
+                print(entranceYear)
                 cursor.execute(sqlGrade,(courseID))
                 grade = cursor.fetchall()[0][0]
-                # print(grade)
+                print(grade)
                 cursor.execute(sqlCanceledYear,(courseID))
                 canceledYear = cursor.fetchall()[0][0]
-                # print(canceledYear)
+                print(canceledYear)
 
                 if((int(currentYear)-int(entranceYear)>=int(grade)-1) and
                         ((canceledYear ==None) or (int(chosenYear)<int(canceledYear)))):
@@ -645,11 +645,7 @@ def StudentIDToCourseChoose(studentID):
         with conn.cursor() as cursor:
             # sql = 'INSERT INTO ZHUA VALUES (13, "BUGUAIZHUA", false);'
             sql = """
-<<<<<<< HEAD
                           select cc.studentID, cc.courseID, c.teacherID, cc.chosenYear, cc.score
-=======
-                          select cc.studentID, cc.courseID, c.teacherID, cc.chosenYeaer, cc.score
->>>>>>> 2336b03c18fd912865bcb0f5af294cc536bfc9a9
                           from courseChoose as cc, course as c
                           where cc.studentID = %s
                           and c.courseID = cc.courseID
@@ -1125,7 +1121,6 @@ def ShowAllStudentAvgScore():
             sql = """
                           select avg(c.score)
                           from courseChoose as c
-                          group by c.studentID
                           """
             try:
                 cursor.execute(sql)
