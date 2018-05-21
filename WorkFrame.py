@@ -306,14 +306,14 @@ class Frame(wx.Frame):
         self.p3CourseList.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.p3ListNoFocus)
 
 # p4 Bind
-#         self.p4ButtonAdd.Bind(wx.EVT_BUTTON, self.p4PressAddButton)
-#         self.p4ButtonModify.Bind(wx.EVT_BUTTON, self.p4PressModifyButton)
-#         self.p4ButtonDelete.Bind(wx.EVT_BUTTON, self.p4PressDeleteButton)
-#         self.p4ButtonQuery.Bind(wx.EVT_BUTTON, self.p4PressQueryButton)
-#         self.p4ButtonConfirm.Bind(wx.EVT_BUTTON, self.p4PressConfirmButton)
-#
-#         self.p4TeacherList.Bind(wx.EVT_LIST_ITEM_SELECTED, self.p4ListFocus)
-#         self.p4TeacherList.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.p4ListNoFocus)
+        self.p4ButtonAdd.Bind(wx.EVT_BUTTON, self.p4PressAddButton)
+        self.p4ButtonModify.Bind(wx.EVT_BUTTON, self.p4PressModifyButton)
+        self.p4ButtonDelete.Bind(wx.EVT_BUTTON, self.p4PressDeleteButton)
+        self.p4ButtonQuery.Bind(wx.EVT_BUTTON, self.p4PressQueryButton)
+        self.p4ButtonConfirm.Bind(wx.EVT_BUTTON, self.p4PressConfirmButton)
+
+        self.p4SelectList.Bind(wx.EVT_LIST_ITEM_SELECTED, self.p4ListFocus)
+        self.p4SelectList.Bind(wx.EVT_LIST_ITEM_DESELECTED, self.p4ListNoFocus)
 
 # p5 Bind
 
@@ -737,15 +737,15 @@ class Frame(wx.Frame):
         tmp12 = self.p3CourseIDInput.GetValue()
         if (tmp11 == "" and tmp12 == "" ):
             tmp = Solve.ShowAllCourse()
-
-        if tmp11 != "" :
-            tmp = Solve.CourseNameToCourse(tmp11)
-        if tmp12 != "" :
-            if tmp == () :
-                # print("tmp12 "+tmp12)
-                tmp = Solve.CourseIDToCourse(tmp12)
-            else :
-                tmp = tuple( set(tmp) & set(Solve.CourseIDToCourse(tmp12)))
+        else :
+            if tmp11 != "" :
+                tmp = Solve.CourseNameToCourse(tmp11)
+            if tmp12 != "" :
+                if tmp == () :
+                    # print("tmp12 "+tmp12)
+                    tmp = Solve.CourseIDToCourse(tmp12)
+                else :
+                    tmp = tuple( set(tmp) & set(Solve.CourseIDToCourse(tmp12)))
 
         for data in tmp:
             # 插入一个item，参数1为在什么地方插入，参数二为这个item的文本内容，刚开始item默认仅有一列
@@ -800,6 +800,144 @@ class Frame(wx.Frame):
         self.clearAllOutput()
 
 # p4 def
+    def p4PressAddButton(self, event ):
+        self.p4ButtonConfirm.Enable()
+        self.p4StudentIDOutput.Enable()
+        self.p4TeacherIDOutput.Enable()
+        self.p4CourseIDOutput.Enable()
+        self.p4SelectYearOutput.Enable()
+        self.p4GradeOutput.Enable()
+        self.isAddORModify = "Add"
+        self.clearAllOutput()
+
+    def p4PressModifyButton(self, event):
+        self.p4ButtonConfirm.Enable()
+        self.p4StudentIDOutput.Disable()
+        self.p4TeacherIDOutput.Enable()
+        self.p4CourseOutput.Enable()
+        self.p4SelectYearOutput.Enable()
+        self.p4GradeOutput.Enable()
+
+        item = self.p4SelectList.GetFocusedItem()
+        self.p4StudentIDOutput.SetValue(self.p4SelectList.GetItemText(item, 0))
+        self.p4TeacherIDOutput.SetValue(self.p4SelectList.GetItemText(item, 1))
+        self.p4CourseOutput.SetValue(self.p4SelectList.GetItemText(item, 2))
+        self.p4SelectYearOutput.SetValue(self.p4SelectList.GetItemText(item,3))
+        self.p4GradeOutput.SetValue(self.p4SelectList.GetItemText(item,4))
+
+        self.isAddORModify = "Modify"
+
+    def p4PressDeleteButton(self, event):
+        self.p4ButtonConfirm.Disable()
+        self.p4StudentIDOutput.Disable()
+        self.p4TeacherIDOutput.Disable()
+        self.p4CourseOutput.Disable()
+        self.p4SelectYearOutput.Disable()
+        self.p4GradeOutput.Disable()
+
+        self.p4IsDelete = wx.MessageDialog(self,"Are you sure to delete it ?","Delete",wx.YES_NO )
+        if self.p4IsDelete.ShowModal() == wx.ID_YES:
+            print("self.p4IsDelete.ShowModal() == wx.ID_YES:")
+            item = self.p4SelectList.GetFocusedItem()
+            Solve.DeleteCourseChoose(self.p4SelectList.GetItemText(item, 0),
+                                     self.p4SelectList.GetItemText(item, 2))
+            self.p4SelectList.DeleteAllItems()
+        self.p4ButtonDelete.Disable()
+        self.p4ButtonModify.Disable()
+
+    def p4PressQueryButton(self, event):
+
+        self.p4SelectList.DeleteAllItems()
+        self.clearAllOutput()
+        self.disableAll()
+
+        tmp = "fuckyou"
+        tmp11 = self.p4StudentNameInput.GetValue()
+        tmp12 = self.p4StudentIDInput.GetValue()
+        tmp21 = self.p4TeacherNameInput.GetValue()
+        tmp22 = self.p4TeacherIDInput.GetValue()
+        tmp31 = self.p4CourseNameInput.GetValue()
+        tmp32 = self.p4CourseIDInput.GetValue()
+
+        if (tmp11 == "" and tmp12 == "" and
+            tmp21 == "" and tmp22 == "" and
+            tmp31 == "" and tmp32 == ""    ):
+            tmp = Solve.ShowAllCourseChoose()
+        else :
+            if tmp11 != "" :
+                tmp = Solve.StudentNameToCourseChoose(tmp11)
+            if tmp12 != "" :
+                if tmp == "fuckyou" :
+                    tmp = Solve.StudentIDToCourseChoose(tmp12)
+                else :
+                    tmp = tuple( set(tmp) & set(Solve.StudentIDToCourseChoose(tmp12)))
+            if tmp21 != "" :
+                if tmp == "fuckyou" :
+                    tmp = Solve.TeacherNameToCourseChoose(tmp21)
+                else :
+                    tmp = tuple( set(tmp) & set(Solve.TeacherNameToCourseChoose(tmp21)))
+            if tmp22 != "" :
+                if tmp == "fuckyou" :
+                    tmp = Solve.TeacherIDToCourseChoose(tmp22)
+                else :
+                    tmp = tuple( set(tmp) & set(Solve.TeacherIDToCourseChoose(tmp22)))
+            if tmp31 != "" :
+                if tmp == "fuckyou" :
+                    tmp = Solve.CourseNameToCourseChoose(tmp31)
+                else :
+                    tmp = tuple( set(tmp) & set(Solve.CourseNameToCourseChoose(tmp31)))
+            if tmp32 != "" :
+                if tmp == "fuckyou" :
+                    tmp = Solve.CourseIDToCourseChoose(tmp32)
+                else :
+                    tmp = tuple( set(tmp) & set(Solve.CourseIDToCourseChoose(tmp32)))
+
+        for data in tmp:
+            # 插入一个item，参数1为在什么地方插入，参数二为这个item的文本内容，刚开始item默认仅有一列
+            index = self.p4SelectList.InsertItem(self.p4SelectList.GetItemCount(), str(data[0]));
+            self.p4SelectList.SetItem(index, 1, str(data[2]))  # 再添加一列，设置文本为data[1]
+            self.p4SelectList.SetItem(index, 2, str(data[1]))
+            self.p4SelectList.SetItem(index, 3, str(data[3]))
+            self.p4SelectList.SetItem(index, 4, str(data[4]))
+
+
+    def p4PressConfirmButton(self, event):
+
+        if( self.isAddORModify == "Add"):
+            p4IsAdd = wx.MessageDialog(self, "Are you sure to add?", "Message", wx.YES_NO)
+            if p4IsAdd.ShowModal() == wx.ID_YES:
+                isOK = Solve.AddCourseChoose( self.p4StudentIDOutput.GetValue(),
+                                        self.p4CourseIDOutput.GetValue(),
+                                        self.p4TeacherIDOutput.GetValue(),
+                                        self.p4SelectYearOutput.GetValue(),
+                                        self.p4GradeOutput.GetValue())
+
+                if( isOK == False ):
+                  wx.MessageDialog(self, "Add failed!", "Message").ShowModal()
+
+                self.p4SelectList.DeleteAllItems()
+
+
+        if self.isAddORModify == "Modify" :
+            p4IsModify = wx.MessageDialog(self, "Are you sure to modify ?", "Modify", wx.YES_NO)
+            if p4IsModify.ShowModal() == wx.ID_YES:
+                isOK = Solve.UpdateCourse(  self.p4StudentIDOutput.GetValue(),
+                                            self.p4CourseIDOutput.GetValue(),
+                                            self.p4TeacherIDOutput.GetValue(),
+                                            self.p4SelectYearOutput.GetValue(),
+                                            self.p4GradeOutput.GetValue())
+                if( isOK == False ):
+                    wx.MessageDialog(self, "Modify failed!", "Message").ShowModal()
+
+                self.p4SelectList.DeleteAllItems()
+
+    def p4ListFocus(self, event):
+        self.p4ButtonDelete.Enable()
+        self.p4ButtonModify.Enable()
+
+    def p4ListNoFocus(self, event):
+        self.disableAll()
+        self.clearAllOutput()
 
 
 # p5 def
