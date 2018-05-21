@@ -3,9 +3,9 @@ import wx
 # import WorkFrame
 
 hoster = '127.0.0.1'
-porter = 330
+porter = 3306
 username = 'root'
-pwd = '353353353'
+pwd = 'yangly2008'
 database = 'test'
 
 def CreateStudentTable():
@@ -89,11 +89,9 @@ def CreateCourseChooseTable():
                create table courseChoose
                ( studentID char(10) not null,
                  courseID char(7) not null,
-                 teacherID char(5) not null,
                  chosenYear year not null,
                  score float(4,1) not null check(score >= 0 and score <= 100),
                  primary key(courseID, studentID),
-                 foreign key(teacherID) references teacher(teacherID) on delete cascade on update cascade,
                  foreign key(studentID) references student(studentID) on delete cascade on update cascade,
                  foreign key(courseID) references course(courseID) on delete cascade on update cascade
                  )
@@ -206,6 +204,13 @@ def AddCourseChoose(studentID, courseID, teacherID, chosenYear, score):
             sql = """
                     insert into courseChoose values(%s, %s, %s, %s, %s)
                      """
+            sqlcheck = """
+                        select *
+                        from course as c
+                        where c.teacherID = %s
+                        and c.courseID = %s
+                        
+                        """
             try:
 
                 cursor.execute(sqlCurrentYear)
@@ -228,9 +233,14 @@ def AddCourseChoose(studentID, courseID, teacherID, chosenYear, score):
                     InputCheck = False
                     state = False
                     print('Insertion invaild')
+                cursor.execute(sqlcheck, (teacherID, courseID))
+                checkResult = cursor.fetchall()[0][0]
+                if (checkResult == None):
+                    InputCheck = False
+                    state = False
                 print(InputCheck)
                 if(InputCheck):
-                    cursor.execute(sql, (studentID, courseID, teacherID, chosenYear, score))
+                    cursor.execute(sql, (studentID, courseID, chosenYear, score))
                     result = cursor.fetchall()
                     print(result)
             except:
@@ -500,9 +510,16 @@ def UpdateCourseChoose(studentID, courseID, teacherID, chosenYear, score):
                                            """
             sql = """
                           update courseChoose
-                          set teacherID = %s, chosenYear = %s, score = %s
+                          set  chosenYear = %s, score = %s
                           where studentID = %s and courseID = %s 
                           """
+            sqlcheck = """
+                                    select *
+                                    from course as c
+                                    where c.teacherID = %s
+                                    and c.courseID = %s
+
+                                    """
             try:
 
 
@@ -526,9 +543,14 @@ def UpdateCourseChoose(studentID, courseID, teacherID, chosenYear, score):
                     InputCheck = False
                     state = False
                     print('Update invaild')
+                cursor.execute(sqlcheck, (teacherID, courseID))
+                checkResult = cursor.fetchall()[0][0]
+                if (checkResult == None):
+                    InputCheck = False
+                    state = False
                 print(InputCheck)
                 if(InputCheck):
-                    cursor.execute(sql, (teacherID, chosenYear, score, studentID, courseID))
+                    cursor.execute(sql, (chosenYear, score, studentID, courseID))
                     result = cursor.fetchall()
                     print(result)
             except:
@@ -594,12 +616,14 @@ def StudentNameToCourseChoose(studentName):
         with conn.cursor() as cursor:
             # sql = 'INSERT INTO ZHUA VALUES (13, "BUGUAIZHUA", false);'
             sql = """
-                          select *
-                          from courseChoose as c
+                          select c.studentID, c.courseID, co.teacherID, c.chosenYear, c.score
+                          from courseChoose as c, course as co
                           where c.studentID in
                             ( select s.studentID
                               from student as s
                               where s.studentName = %s )
+                              and
+                              c.courseID = co.courseID
                           """
             try:
                 cursor.execute(sql, (studentName))
@@ -621,9 +645,10 @@ def StudentIDToCourseChoose(studentID):
         with conn.cursor() as cursor:
             # sql = 'INSERT INTO ZHUA VALUES (13, "BUGUAIZHUA", false);'
             sql = """
-                          select *
-                          from courseChoose
-                          where studentID = %s
+                          select cc.studentID, cc.courseID, c.teacherID, cc.chosenYeaer, cc.score
+                          from courseChoose as cc, course as c
+                          where cc.studentID = %s
+                          and c.courseID = cc.courseID
                           """
             try:
                 cursor.execute(sql, (studentID))
@@ -646,8 +671,8 @@ def StudentNameAndCourseNameToGrade(studentName, courseName):
         with conn.cursor() as cursor:
             # sql = 'INSERT INTO ZHUA VALUES (13, "BUGUAIZHUA", false);'
             sql = """
-                          select *
-                          from courseChoose as c
+                          select c.studentID, c.courseID, co.teacherID, c.chosenYear, c.score
+                          from courseChoose as c, course as co
                           where c.studentID in
                             ( select studentID
                               from student
@@ -656,6 +681,7 @@ def StudentNameAndCourseNameToGrade(studentName, courseName):
                             ( select courseID
                               from course
                               where courseName = %s )
+                              and c.courseID = co.courseID
                           """
             try:
                 cursor.execute(sql, (studentName, courseName))
@@ -677,13 +703,14 @@ def StudentNameAndCourseIDToGrade(studentName, courseID):
         with conn.cursor() as cursor:
             # sql = 'INSERT INTO ZHUA VALUES (13, "BUGUAIZHUA", false);'
             sql = """
-                          select *
-                          from courseChoose as c
+                          select c.studentID, c.courseID, co.teacherID, c.chosenYear, c.score
+                          from courseChoose as c, course as co
                           where c.studentID in
                             ( select studentID
                               from student
                               where studentName = %s )
                               and c.courseID = %s
+                              and c.courseID = co.courseID
                           """
             try:
                 cursor.execute(sql, (studentName, courseID))
@@ -705,13 +732,14 @@ def StudentIDAndCourseNameToGrade(studentID, courseName):
         with conn.cursor() as cursor:
             # sql = 'INSERT INTO ZHUA VALUES (13, "BUGUAIZHUA", false);'
             sql = """
-                          select *
-                          from courseChoose as c
+                          select c.studentID, c.courseID, co.teacherID, c.chosenYear, c.score
+                          from courseChoose as c, course as co
                           where c.studentID = %s
                               and c.courseID in
                             ( select courseID
                               from course
                               where courseName = %s )
+                              and c.courseID = co.courseID
                           """
             try:
                 cursor.execute(sql, (studentID, courseName))
@@ -733,10 +761,11 @@ def StudentIDAndCourseIDToGrade(studentID, courseID):
         with conn.cursor() as cursor:
             # sql = 'INSERT INTO ZHUA VALUES (13, "BUGUAIZHUA", false);'
             sql = """
-                          select *
-                          from courseChoose as c
+                          select c.studentID, c.courseID, co.teacherID, c.chosenYear, c.score
+                          from courseChoose as c, course as co
                           where c.studentID = %s
                               and c.courseID = %s
+                              and c.courseID = co.courseID
                           """
             try:
                 cursor.execute(sql, (studentID, courseID))
@@ -782,12 +811,13 @@ def CourseNameToCourseChoose(courseName):
         with conn.cursor() as cursor:
             # sql = 'INSERT INTO ZHUA VALUES (13, "BUGUAIZHUA", false);'
             sql = """
-                          select *
-                          from courseChoose as c
+                          select c.studentID, c.courseID, co.teacherID, c.chosenYear, c.score
+                          from courseChoose as c, course as co
                           where c.courseID in
                             ( select courseID
                               from course
                               where courseName = %s)
+                              and c.courseID = co.courseID
                           """
             try:
                 cursor.execute(sql, (courseName))
@@ -833,9 +863,10 @@ def CourseIDToCourseChoose(courseID):
         with conn.cursor() as cursor:
             # sql = 'INSERT INTO ZHUA VALUES (13, "BUGUAIZHUA", false);'
             sql = """
-                          select *
-                          from courseChoose
-                          where courseID = %s
+                          select c.studentID, c.courseID, co.teacherID, c.chosenYear, c.score
+                          from courseChoose as c, course as co
+                          where c.courseID = %s
+                          and c.courseID = co.courseID
                           """
             try:
                 cursor.execute(sql, (courseID))

@@ -15,7 +15,7 @@ class Frame(wx.Frame):
 
         panel = wx.Panel(self, id=wx.ID_ANY, pos=(0, 0), size=(800, 120))
 
-        self.textWelcome = wx.StaticText(panel, id=wx.ID_ANY, label=u"Welcome!        "+userName, pos=(600, 10), size=wx.DefaultSize, style=0)
+        self.textWelcome = wx.StaticText(panel, id=wx.ID_ANY, label=u"Welcome "+ userName + "!", pos=(300, 10), size=(470, 20), style=wx.ALIGN_RIGHT)
         self.buttonStudent = wx.Button(panel, id=wx.ID_ANY, label=u"Student", pos=(0, 80), size=wx.DefaultSize, style=0)
         self.buttonTeacher = wx.Button(panel, id=wx.ID_ANY, label=u"Teacher", pos=(112, 80), size=wx.DefaultSize, style=0)
         self.buttonCourse = wx.Button(panel, id=wx.ID_ANY, label=u"Course", pos=(224, 80), size=wx.DefaultSize, style=0)
@@ -155,7 +155,7 @@ class Frame(wx.Frame):
         self.p3ButtonConfirm = wx.Button(self.panelCourse, id=wx.ID_ANY, label=u"Confirm", pos=(700, 438),
                                          size=(80, 28), style=0)
 
-        self.p3CourseList = wx.ListCtrl(self.panelCourse, -1, pos=(0, 35), size=(785, 340), style=wx.LC_REPORT)
+        self.p3CourseList = wx.ListCtrl(self.panelCourse, -1, pos=(0, 35), size=(785, 400), style=wx.LC_REPORT)
         self.p3CourseList.InsertColumn(0, "Course ID")
         self.p3CourseList.InsertColumn(1, "Course Name")
         self.p3CourseList.InsertColumn(2, "Teacher ID")
@@ -270,7 +270,7 @@ class Frame(wx.Frame):
         self.isAddORModify = ""
         self.userType = userType
         # self.userType = "administrator" # teacher / student
-        self.userPrority()
+        self.userAuthority()
         self.disableAll()
 
 #p1 Bind
@@ -694,6 +694,9 @@ class Frame(wx.Frame):
         self.p3GradeOutput.Enable()
         self.p3CanceledYearOutput.Enable()
 
+        if self.userType == 1:
+            pass
+
         tmp = self.p3CanceledYearOutput.GetValue()
         if (tmp == None):
             tmp = ""
@@ -814,14 +817,14 @@ class Frame(wx.Frame):
         self.p4ButtonConfirm.Enable()
         self.p4StudentIDOutput.Disable()
         self.p4TeacherIDOutput.Enable()
-        self.p4CourseOutput.Enable()
+        self.p4CourseIDOutput.Enable()
         self.p4SelectYearOutput.Enable()
         self.p4GradeOutput.Enable()
 
         item = self.p4SelectList.GetFocusedItem()
         self.p4StudentIDOutput.SetValue(self.p4SelectList.GetItemText(item, 0))
         self.p4TeacherIDOutput.SetValue(self.p4SelectList.GetItemText(item, 1))
-        self.p4CourseOutput.SetValue(self.p4SelectList.GetItemText(item, 2))
+        self.p4CourseIDOutput.SetValue(self.p4SelectList.GetItemText(item, 2))
         self.p4SelectYearOutput.SetValue(self.p4SelectList.GetItemText(item,3))
         self.p4GradeOutput.SetValue(self.p4SelectList.GetItemText(item,4))
 
@@ -947,8 +950,8 @@ class Frame(wx.Frame):
 
 #other def
 
-    def userPrority(self):
-        if( self.userType == "teacher" or self.userType == "student" ):
+    def userAuthority(self):
+        if( self.userType == 1 or self.userType == 0 ):
             self.p1ButtonAdd.Hide()
             self.p1ButtonModify.Hide()
             self.p1ButtonDelete.Hide()
@@ -959,6 +962,36 @@ class Frame(wx.Frame):
             self.p1EntranceYearOutput.Hide()
             self.p1ClassOutput.Hide()
             self.p1SexOutput.Hide()
+
+            self.p2ButtonAdd.Hide()
+            self.p2ButtonModify.Hide()
+            self.p2ButtonDelete.Hide()
+            self.p2ButtonConfirm.Hide()
+            self.p2TeacherIDOutput.Hide()
+            self.p2TeacherNameOutput.Hide()
+
+            self.p3ButtonAdd.Hide()
+            self.p3ButtonModify.Hide()
+            self.p3ButtonDelete.Hide()
+            self.p3ButtonConfirm.Hide()
+            self.p3CourseIDOutput.Hide()
+            self.p3CourseNameOutput.Hide()
+            self.p3TeacherIDOutput.Hide()
+            self.p3CreditOutput.Hide()
+            self.p3GradeOutput.Hide()
+            self.p3CanceledYearOutput.Hide()
+
+            self.p4ButtonAdd.Hide()
+            self.p4ButtonModify.Hide()
+            self.p4ButtonDelete.Hide()
+            self.p4ButtonConfirm.Hide()
+            self.p4StudentIDOutput.Hide()
+            self.p4TeacherIDOutput.Hide()
+            self.p4CourseIDOutput.Hide()
+            self.p4SelectYearOutput.Hide()
+            self.p4GradeOutput.Hide()
+        if self.userType == 1:
+            self.p3ButtonModify.Show()
 
     def clearAllInput(self):
         self.p1StudentIDInput.SetValue("")
@@ -1045,12 +1078,12 @@ class Frame(wx.Frame):
 
 if __name__ == '__main__':
     app = wx.App(False)
-    frame = Frame(None , "zzy" , "administrator")
+    frame = Frame(None , "administrator" , 2)
     frame.Show(True)
     app.MainLoop()
 
 
 def secondFrame( userName , userType ,sframe):
-    print( "id " + userName + " type " + userType )
-    frame = Frame(None, userName,userType)
+    # print( "id " + userName + " type " + str(userType )
+    frame = Frame(None, userName, userType)
     frame.Show(True)
