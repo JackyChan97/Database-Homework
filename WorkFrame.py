@@ -834,7 +834,7 @@ class Frame(wx.Frame):
         self.p4ButtonConfirm.Disable()
         self.p4StudentIDOutput.Disable()
         self.p4TeacherIDOutput.Disable()
-        self.p4CourseOutput.Disable()
+        self.p4CourseIDOutput.Disable()
         self.p4SelectYearOutput.Disable()
         self.p4GradeOutput.Disable()
 
@@ -924,7 +924,8 @@ class Frame(wx.Frame):
         if self.isAddORModify == "Modify" :
             p4IsModify = wx.MessageDialog(self, "Are you sure to modify ?", "Modify", wx.YES_NO)
             if p4IsModify.ShowModal() == wx.ID_YES:
-                isOK = Solve.UpdateCourse(  self.p4StudentIDOutput.GetValue(),
+
+                isOK = Solve.UpdateCourseChoose(  self.p4StudentIDOutput.GetValue(),
                                             self.p4CourseIDOutput.GetValue(),
                                             self.p4TeacherIDOutput.GetValue(),
                                             self.p4SelectYearOutput.GetValue(),
