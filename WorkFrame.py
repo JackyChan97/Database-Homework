@@ -15,7 +15,21 @@ class Frame(wx.Frame):
 
         panel = wx.Panel(self, id=wx.ID_ANY, pos=(0, 0), size=(800, 120))
 
-        self.textWelcome = wx.StaticText(panel, id=wx.ID_ANY, label=u"Welcome "+ userName + "!", pos=(300, 10), size=(470, 20), style=wx.ALIGN_RIGHT)
+        imageSchoolBadge = wx.Image("schoolBadge1.png", wx.BITMAP_TYPE_ANY)
+        imageSchoolBadge = imageSchoolBadge.Scale(70, 70)
+        temp = imageSchoolBadge.ConvertToBitmap()
+        self.bmpSchoolBadge = wx.StaticBitmap(panel, bitmap=temp, pos=(10, 5), size=(70, 70))
+
+        imageSmallCat = wx.Image("smallcat.png", wx.BITMAP_TYPE_PNG)
+        imageSmallCat = imageSmallCat.Scale(185, 210)
+        temp = imageSmallCat.ConvertToBitmap()
+        self.bmpSmallCat = wx.StaticBitmap(panel, bitmap=temp, pos=(597, -80), size=(185, 210))
+        self.textTitle = LoginFrame.TransparentText(panel, id=wx.ID_ANY, label=u"SWS Student Management System", pos=(100, 25),
+                                         size=(100, 50))
+        font = wx.Font(23, wx.ROMAN, wx.ITALIC, wx.NORMAL)
+        self.textTitle.SetFont(font)
+
+        # self.textWelcome = wx.StaticText(panel, id=wx.ID_ANY, label=u"Welcome "+ userName + "!", pos=(300, 10), size=(470, 20), style=wx.ALIGN_RIGHT)
         self.buttonStudent = wx.Button(panel, id=wx.ID_ANY, label=u"Student", pos=(0, 80), size=wx.DefaultSize, style=0)
         self.buttonTeacher = wx.Button(panel, id=wx.ID_ANY, label=u"Teacher", pos=(112, 80), size=wx.DefaultSize, style=0)
         self.buttonCourse = wx.Button(panel, id=wx.ID_ANY, label=u"Course", pos=(224, 80), size=wx.DefaultSize, style=0)
