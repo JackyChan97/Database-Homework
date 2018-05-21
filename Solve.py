@@ -3,9 +3,9 @@ import wx
 # import WorkFrame
 
 hoster = '127.0.0.1'
-porter = 3306
+porter = 330
 username = 'root'
-pwd = 'czj15876593366zj'
+pwd = '353353353'
 database = 'test'
 
 def CreateStudentTable():
@@ -159,7 +159,8 @@ def AddCourse(courseID, courseName, teacherID, credit, grade, canceledYear=None)
         print('Connected successfully.')
         with conn.cursor() as cursor:
             # sql = 'INSERT INTO ZHUA VALUES (13, "BUGUAIZHUA", false);'
-
+            if(canceledYear == ""):
+                canceledYear = None
             sql = """
                 insert into course values(%s, %s, %s, %s, %s, %s)
                 """
@@ -417,6 +418,8 @@ def UpdateCourse(courseID, courseName, teacherID, credit, grade, canceledYear=No
     try:
         conn = pymysql.connect(host=hoster, port=porter, user=username, passwd=pwd, db=database)
         print('Connected successfully.')
+        if( canceledYear == "" ):
+            canceledYear = None
         with conn.cursor() as cursor:
             # sql = 'INSERT INTO ZHUA VALUES (13, "BUGUAIZHUA", false);'
 
@@ -449,8 +452,10 @@ def UpdateCourse(courseID, courseName, teacherID, credit, grade, canceledYear=No
                 maxChosenYear = cursor.fetchall()[0][0]
                 print(maxChosenYear)
 
-                if((int(currentYear)-int(maxEntranceYear)>= int(grade)-1 )and (int(maxChosenYear)<int(canceledYear) or canceledYear == None)):
+                if((maxEntranceYear == None or int(currentYear)-int(maxEntranceYear)>= int(grade)-1 )
+                        and (canceledYear == None or int(maxChosenYear)<int(canceledYear) )):
                     InputCheck = True
+                    # print("Im In")
                 else:
                     InputCheck = False
                     print("Update invalid")
@@ -1235,7 +1240,7 @@ if __name__ == '__main__':
     # UpdateStudent("1234567394", "zzy", "male", "18", "2017", "16jichuang")
     # UpdateTeacher("12345","zzzy")
     # UpdateCourse("1234567", "zzy'c", "12364", "10.0", "4","2018")
-    UpdateCourseChoose("1234567394","1234566","12363", "2019", "20")
+    # UpdateCourseChoose("1234567394","1234567","12364", "2019", "20")
     # print(StudentNameToStudent("zzzzzzzy"))
     # StudentIDToStudent("1234567890")
     # StudentNameToCourseChoose("zzy")
