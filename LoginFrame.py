@@ -91,7 +91,7 @@ class FrameLogin(wx.Frame):
             if self.radiobox.GetSelection() == 2:
                 if self.textctrlUserID.GetValue() == self.UserID:
                     state = True
-                    name = "administrator"
+                    name = ['administrator']
 
         authority = self.radiobox.GetSelection()
 
