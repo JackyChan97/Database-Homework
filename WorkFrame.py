@@ -1,5 +1,3 @@
-# -*- encoding: utf-8 -*-
-
 import wx
 import sys
 import LoginFrame
@@ -12,6 +10,10 @@ class Frame(wx.Frame):
                           size=wx.Size(800, 640), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         self.SetSizeHints(wx.Size(800, 640), wx.Size(800, 640))
+
+        self.SetTitle('Welcome ' + userName + '!')
+        self.icon = wx.Icon('icon.ico', wx.BITMAP_TYPE_ICO)
+        self.SetIcon(self.icon)
 
         panel = wx.Panel(self, id=wx.ID_ANY, pos=(0, 0), size=(800, 120))
 
@@ -50,7 +52,7 @@ class Frame(wx.Frame):
         self.panelStatistics = wx.Panel(self, id=wx.ID_ANY, pos=(0, 121), size=(800, 520))
         self.panelStatistics.Hide()
 
-# 输入设置
+# shu ru she zhi
 
         self.inputTextSize = (100,23)
         self.inputInputSize = (100,23)
@@ -100,7 +102,7 @@ class Frame(wx.Frame):
         self.p1StudentList.InsertColumn(5, "Sex")
 
 
-        self.p1StudentList.SetColumnWidth(0, 135)  # 设置每一列的宽度
+        self.p1StudentList.SetColumnWidth(0, 135)  
         self.p1StudentList.SetColumnWidth(1, 120)
         self.p1StudentList.SetColumnWidth(2, 120)
         self.p1StudentList.SetColumnWidth(3, 120)
@@ -136,7 +138,7 @@ class Frame(wx.Frame):
         self.p2TeacherList.InsertColumn(0, "Teacher ID")
         self.p2TeacherList.InsertColumn(1, "Teacher Name")
 
-        self.p2TeacherList.SetColumnWidth(0, 135)  # 设置每一列的宽度
+        self.p2TeacherList.SetColumnWidth(0, 135)  
         self.p2TeacherList.SetColumnWidth(1, 650)
 
 # p3
@@ -180,7 +182,7 @@ class Frame(wx.Frame):
         self.p3CourseList.InsertColumn(4, "Grade")
         self.p3CourseList.InsertColumn(5, "Canceled Year")
 
-        self.p3CourseList.SetColumnWidth(0, 120)  # 设置每一列的宽度
+        self.p3CourseList.SetColumnWidth(0, 120)  
         self.p3CourseList.SetColumnWidth(1, 120)
         self.p3CourseList.SetColumnWidth(2, 120)
         self.p3CourseList.SetColumnWidth(3, 90)
@@ -245,7 +247,7 @@ class Frame(wx.Frame):
         self.p4SelectList.InsertColumn(3, "Select Year")
         self.p4SelectList.InsertColumn(4, "Score")
 
-        self.p4SelectList.SetColumnWidth(0, 120)  # 设置每一列的宽度
+        self.p4SelectList.SetColumnWidth(0, 120)  
         self.p4SelectList.SetColumnWidth(1, 120)
         self.p4SelectList.SetColumnWidth(2, 120)
         self.p4SelectList.SetColumnWidth(3, 120)
@@ -497,9 +499,9 @@ class Frame(wx.Frame):
                 self.p1StudentNameInput.GetValue() == "" ):
             tmp = Solve.ShowAllStudents()
             for data in tmp:
-                # 插入一个item，参数1为在什么地方插入，参数二为这个item的文本内容，刚开始item默认仅有一列
+                
                 index = self.p1StudentList.InsertItem(self.p1StudentList.GetItemCount(),str(data[0]));
-                self.p1StudentList.SetItem(index, 1, str(data[1]))  # 再添加一列，设置文本为data[1]
+                self.p1StudentList.SetItem(index, 1, str(data[1]))  
                 self.p1StudentList.SetItem(index, 2, str(data[3]))
                 self.p1StudentList.SetItem(index, 3, str(data[4]))
                 self.p1StudentList.SetItem(index, 4, str(data[5]))
@@ -512,9 +514,9 @@ class Frame(wx.Frame):
             tmp = Solve.StudentIDToStudent(self.p1StudentIDInput.GetValue())
             print(tmp)
             for data in tmp:
-                # 插入一个item，参数1为在什么地方插入，参数二为这个item的文本内容，刚开始item默认仅有一列
+                
                 index = self.p1StudentList.InsertItem(self.p1StudentList.GetItemCount(),str(data[0]));
-                self.p1StudentList.SetItem(index, 1, str(data[1]))  # 再添加一列，设置文本为data[1]
+                self.p1StudentList.SetItem(index, 1, str(data[1]))  
                 self.p1StudentList.SetItem(index, 2, str(data[3]))
                 self.p1StudentList.SetItem(index, 3, str(data[4]))
                 self.p1StudentList.SetItem(index, 4, str(data[5]))
@@ -525,9 +527,9 @@ class Frame(wx.Frame):
             tmp = Solve.StudentNameToStudent(self.p1StudentNameInput.GetValue())
             print(tmp)
             for data in tmp:
-                # 插入一个item，参数1为在什么地方插入，参数二为这个item的文本内容，刚开始item默认仅有一列
+                
                 index = self.p1StudentList.InsertItem(self.p1StudentList.GetItemCount(),str(data[0]));
-                self.p1StudentList.SetItem(index, 1, str(data[1]))  # 再添加一列，设置文本为data[1]
+                self.p1StudentList.SetItem(index, 1, str(data[1]))  
                 self.p1StudentList.SetItem(index, 2, str(data[3]))
                 self.p1StudentList.SetItem(index, 3, str(data[4]))
                 self.p1StudentList.SetItem(index, 4, str(data[5]))
@@ -540,9 +542,9 @@ class Frame(wx.Frame):
             tmp = tuple(set(tmp1) & set(tmp2))
 
             for data in tmp:
-                # 插入一个item，参数1为在什么地方插入，参数二为这个item的文本内容，刚开始item默认仅有一列
+                
                 index = self.p1StudentList.InsertItem(self.p1StudentList.GetItemCount(),str(data[0]));
-                self.p1StudentList.SetItem(index, 1, str(data[1]))  # 再添加一列，设置文本为data[1]
+                self.p1StudentList.SetItem(index, 1, str(data[1]))  
                 self.p1StudentList.SetItem(index, 2, str(data[3]))
                 self.p1StudentList.SetItem(index, 3, str(data[4]))
                 self.p1StudentList.SetItem(index, 4, str(data[5]))
@@ -639,9 +641,9 @@ class Frame(wx.Frame):
 
             tmp = Solve.ShowAllTeacher()
             for data in tmp:
-                # 插入一个item，参数1为在什么地方插入，参数二为这个item的文本内容，刚开始item默认仅有一列
+                
                 index = self.p2TeacherList.InsertItem(self.p2TeacherList.GetItemCount(),str(data[0]));
-                self.p2TeacherList.SetItem(index, 1, str(data[1]))  # 再添加一列，设置文本为data[1]
+                self.p2TeacherList.SetItem(index, 1, str(data[1]))  
 
 
         if (self.p2TeacherIDInput.GetValue() != "" and
@@ -649,16 +651,16 @@ class Frame(wx.Frame):
             tmp = Solve.TeacherIDToTeacher(self.p2TeacherIDInput.GetValue())
 
             for data in tmp:
-                # 插入一个item，参数1为在什么地方插入，参数二为这个item的文本内容，刚开始item默认仅有一列
+                
                 index = self.p2TeacherList.InsertItem(self.p2TeacherList.GetItemCount(),str(data[0]));
-                self.p2TeacherList.SetItem(index, 1, str(data[1]))  # 再添加一列，设置文本为data[1]
+                self.p2TeacherList.SetItem(index, 1, str(data[1]))  
 
         if (self.p2TeacherIDInput.GetValue() == "" and
                 self.p2TeacherNameInput.GetValue() != ""):
             tmp = Solve.TeacherNameToTeacher(self.p2TeacherNameInput.GetValue())
 
             for data in tmp:
-                # 插入一个item，参数1为在什么地方插入，参数二为这个item的文本内容，刚开始item默认仅有一列
+                
                 index = self.p2TeacherList.InsertItem(self.p2TeacherList.GetItemCount(),str(data[0]));
                 self.p2TeacherList.SetItem(index, 1, str(data[1]))
 
@@ -669,7 +671,7 @@ class Frame(wx.Frame):
             tmp = tuple(set(tmp1) & set(tmp2))
 
             for data in tmp:
-                # 插入一个item，参数1为在什么地方插入，参数二为这个item的文本内容，刚开始item默认仅有一列
+                
                 index = self.p2TeacherList.InsertItem(self.p2TeacherList.GetItemCount(),str(data[0]));
                 self.p2TeacherList.SetItem(index, 1, str(data[1]))
 
@@ -786,9 +788,9 @@ class Frame(wx.Frame):
                     tmp = tuple( set(tmp) & set(Solve.CourseIDToCourse(tmp12)))
 
         for data in tmp:
-            # 插入一个item，参数1为在什么地方插入，参数二为这个item的文本内容，刚开始item默认仅有一列
+            
             index = self.p3CourseList.InsertItem(self.p3CourseList.GetItemCount(), str(data[0]));
-            self.p3CourseList.SetItem(index, 1, str(data[1]))  # 再添加一列，设置文本为data[1]
+            self.p3CourseList.SetItem(index, 1, str(data[1]))  
             self.p3CourseList.SetItem(index, 2, str(data[2]))
             self.p3CourseList.SetItem(index, 3, str(data[3]))
             self.p3CourseList.SetItem(index, 4, str(data[4]))
@@ -940,9 +942,9 @@ class Frame(wx.Frame):
                     tmp = tuple( set(tmp) & set(Solve.CourseIDToCourseChoose(tmp32)))
 
         for data in tmp:
-            # 插入一个item，参数1为在什么地方插入，参数二为这个item的文本内容，刚开始item默认仅有一列
+            
             index = self.p4SelectList.InsertItem(self.p4SelectList.GetItemCount(), str(data[0]));
-            self.p4SelectList.SetItem(index, 1, str(data[2]))  # 再添加一列，设置文本为data[1]
+            self.p4SelectList.SetItem(index, 1, str(data[2]))  
             self.p4SelectList.SetItem(index, 2, str(data[1]))
             self.p4SelectList.SetItem(index, 3, str(data[3]))
             self.p4SelectList.SetItem(index, 4, str(data[4]))

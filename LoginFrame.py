@@ -1,3 +1,4 @@
+
 import wx
 import WorkFrame
 import Solve
@@ -9,10 +10,12 @@ class FrameLogin(wx.Frame):
 
     def __init__(self, parent):
 
-        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"LOGIN", pos=(200, 80),
+        wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"SWS Student Management System", pos=(200, 80),
                           size=wx.Size(800, 640), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
         # self.SetSizeHints(wx.Size(800, 640), wx.Size(800, 640))
+        self.icon = wx.Icon('icon.ico', wx.BITMAP_TYPE_ICO)
+        self.SetIcon(self.icon)
 
         panel = wx.Panel(self, id=wx.ID_ANY)
 
@@ -129,4 +132,8 @@ if __name__ == '__main__':
     app = wx.App(False)
     frame = FrameLogin(None)
     frame.Show(True)
+    if Solve.CheckConnection() == False:
+        messgae = wx.MessageDialog(None, "Connection to Database failed.", "Message", wx.OK)
+        messgae.ShowModal()
+        wx.Exit()
     app.MainLoop()

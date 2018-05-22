@@ -1,12 +1,34 @@
 import pymysql
 import wx
-# import WorkFrame
 
-hoster = '127.0.0.1'
-porter = 330
-username = 'root'
-pwd = '353353353'
-database = 'test'
+hoster = ''
+porter = ''
+username = ''
+pwd = ''
+database = ''
+
+def LoadingData():
+    state = False
+    with open('infor.png', 'r') as f:
+        contents = f.readlines()[0].split(' ')
+        global hoster, porter, username, pwd, database
+        hoster, porter, username, pwd, database = contents
+        porter = int(porter)
+        state = True
+        # print(contents)
+    return state
+
+def CheckConnection():
+    try:
+        state = LoadingData()
+        if state == False:
+            return state
+        conn = pymysql.connect(host=hoster, port=porter, user=username, passwd=pwd, db=database)
+        print('Connected successfully.')
+        conn.close()
+        return True
+    except:
+        return False
 
 def CreateStudentTable():
     try:
