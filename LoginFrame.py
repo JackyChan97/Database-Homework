@@ -13,7 +13,7 @@ class FrameLogin(wx.Frame):
         wx.Frame.__init__(self, parent, id=wx.ID_ANY, title=u"SWS Student Management System", pos=(200, 80),
                           size=wx.Size(800, 640), style=wx.DEFAULT_FRAME_STYLE | wx.TAB_TRAVERSAL)
 
-        # self.SetSizeHints(wx.Size(800, 640), wx.Size(800, 640))
+        self.SetSizeHints(wx.Size(800, 640), wx.Size(800, 640))
         self.icon = wx.Icon('icon.ico', wx.BITMAP_TYPE_ICO)
         self.SetIcon(self.icon)
 
@@ -91,7 +91,7 @@ class FrameLogin(wx.Frame):
             if self.radiobox.GetSelection() == 2:
                 if self.textctrlUserID.GetValue() == self.UserID:
                     state = True
-                    name = ['administrator']
+                    name = "administrator"
 
         authority = self.radiobox.GetSelection()
 
