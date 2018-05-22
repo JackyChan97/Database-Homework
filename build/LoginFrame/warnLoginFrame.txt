@@ -1,6 +1,7 @@
 missing module named resource - imported by posix, F:\Database-Homework\LoginFrame.py
 missing module named posix - imported by os, F:\Database-Homework\LoginFrame.py
 missing module named _posixsubprocess - imported by subprocess, F:\Database-Homework\LoginFrame.py
+missing module named 'org.python' - imported by pickle, F:\Database-Homework\LoginFrame.py, xml.sax
 missing module named readline - imported by cmd, code, pdb, F:\Database-Homework\LoginFrame.py
 excluded module named _frozen_importlib - imported by importlib, importlib.abc, F:\Database-Homework\LoginFrame.py
 missing module named _frozen_importlib_external - imported by importlib._bootstrap, importlib, importlib.abc, F:\Database-Homework\LoginFrame.py
@@ -11,10 +12,9 @@ missing module named 'java.lang' - imported by platform, F:\Database-Homework\Lo
 missing module named vms_lib - imported by platform, F:\Database-Homework\LoginFrame.py
 missing module named termios - imported by tty, getpass, F:\Database-Homework\LoginFrame.py
 missing module named grp - imported by shutil, tarfile, F:\Database-Homework\LoginFrame.py
-missing module named _dummy_threading - imported by dummy_threading, F:\Database-Homework\LoginFrame.py
-missing module named 'org.python' - imported by copy, F:\Database-Homework\LoginFrame.py, xml.sax
 missing module named pwd - imported by posixpath, shutil, tarfile, http.server, webbrowser, getpass, F:\Database-Homework\LoginFrame.py, netrc
-missing module named org - imported by pickle, F:\Database-Homework\LoginFrame.py
+missing module named _dummy_threading - imported by dummy_threading, F:\Database-Homework\LoginFrame.py
+missing module named org - imported by copy, F:\Database-Homework\LoginFrame.py
 missing module named ConfigParser - imported by pymysql.optionfile
 missing module named __builtin__ - imported by pymysql._compat
 missing module named Carbon - imported by wx.lib.colourutils
